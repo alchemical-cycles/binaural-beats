@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binaural Beats App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:focus {
+            outline: 2px solid #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Binaural Beats Generator</h1>
+        <div>
+            <label for="baseFrequency">Base Frequency: <span id="baseFrequencyValue">200</span> Hz</label>
+            <input type="range" id="baseFrequency" min="20" max="500" value="200" step="1" aria-describedby="baseFrequencyValue">
+        </div>
+        <div>
+            <label for="beatFrequency">Beat Frequency: <span id="beatFrequencyValue">10</span> Hz</label>
+            <input type="range" id="beatFrequency" min="1" max="40" value="10" step="1" aria-describedby="beatFrequencyValue">
+        </div>
+        <button id="toggleButton" aria-pressed="false">Start</button>
+    </div>
+
+    <script>
+        let audioContext;
+        let oscillatorLeft;
+        let oscillatorRight;
+        let gainNode;
+        let isPlaying = false;
+
+        const baseFrequencyInput = document.getElementById('baseFrequency');
+        const beatFrequencyInput = document.getElementById('beatFrequency');
+        const toggleButton = document.getElementById('toggleButton');
+
+        baseFrequencyInput.addEventListener('input', updateFrequency);
+        beatFrequencyInput.addEventListener('input', updateFrequency);
+        toggleButton.addEventListener('click', toggleSound);
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioContext.createGain();
+                gainNode.gain.value = 0.1;
+                gainNode.connect(audioContext.destination);
+            }
+        }
+
+        function createOscillators() {
+            oscillatorLeft = audioContext.createOscillator();
+            oscillatorRight = audioContext.createOscillator();
+
+            const mergerNode = audioContext.createChannelMerger(2);
+
+            oscillatorLeft.connect(mergerNode, 0, 0);
+            oscillatorRight.connect(mergerNode, 0, 1);
+            mergerNode.connect(gainNode);
+
+            updateFrequency();
+        }
+
+        function updateFrequency() {
+            const baseFrequency = parseFloat(baseFrequencyInput.value);
+            const beatFrequency = parseFloat(beatFrequencyInput.value);
+
+            document.getElementById('baseFrequencyValue').textContent = baseFrequency;
+            document.getElementById('beatFrequencyValue').textContent = beatFrequency;
+
+            if (oscillatorLeft && oscillatorRight) {
+                oscillatorLeft.frequency.setValueAtTime(baseFrequency, audioContext.currentTime);
+                oscillatorRight.frequency.setValueAtTime(baseFrequency + beatFrequency, audioContext.currentTime);
+            }
+        }
+
+        function toggleSound() {
+            initAudio();
+            if (isPlaying) {
+                oscillatorLeft.stop();
+                oscillatorRight.stop();
+                toggleButton.textContent = 'Start';
+                toggleButton.setAttribute('aria-pressed', 'false');
+            } else {
+                createOscillators();
+                oscillatorLeft.start();
+                oscillatorRight.start();
+                toggleButton.textContent = 'Stop';
+                toggleButton.setAttribute('aria-pressed', 'true');
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
+</body>
+</html>
