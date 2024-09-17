@@ -8,7 +8,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not(.light-mode):not(.dark-mode) {
         --bg-color: #121212;
         --container-bg: #1e1e1e;
         --text-color: #e0e0e0;
@@ -25,6 +25,15 @@
     --button-bg: #388E3C;
     --button-color: #ffffff;
     --button-hover: #2E7D32;
+}
+
+.light-mode {
+    --bg-color: #f0f0f0;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --button-bg: #4CAF50;
+    --button-color: #ffffff;
+    --button-hover: #45a049;
 }
 
 body {
