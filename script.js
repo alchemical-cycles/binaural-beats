@@ -94,6 +94,7 @@ setTheme(darkModeMediaQuery.matches);
 function announceMode(isDark) {
     const modeAnnouncement = document.createElement('div');
     modeAnnouncement.setAttribute('aria-live', 'polite');
+    modeAnnouncement.className = 'sr-only'; // Add this line
     modeAnnouncement.textContent = isDark ? 'Dark mode enabled' : 'Light mode enabled';
     document.body.appendChild(modeAnnouncement);
     setTimeout(() => {
