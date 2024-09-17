@@ -88,3 +88,7 @@ We welcome contributions to improve the Binaural Beats Generator. Please feel fr
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Attributions
+
+- Sun and Moon icons by [Feather Icons](https://feathericons.com/) - [MIT License](https://github.com/feathericons/feather/blob/master/LICENSE)

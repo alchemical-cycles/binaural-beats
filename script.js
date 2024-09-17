@@ -7,10 +7,12 @@ let isPlaying = false;
 const baseFrequencyInput = document.getElementById('baseFrequency');
 const beatFrequencyInput = document.getElementById('beatFrequency');
 const toggleButton = document.getElementById('toggleButton');
+const darkModeToggle = document.getElementById('darkModeToggle');
 
 baseFrequencyInput.addEventListener('input', updateFrequency);
 beatFrequencyInput.addEventListener('input', updateFrequency);
 toggleButton.addEventListener('click', toggleSound);
+darkModeToggle.addEventListener('change', toggleDarkMode);
 
 function initAudio() {
     if (!audioContext) {
@@ -63,3 +65,10 @@ function toggleSound() {
     }
     isPlaying = !isPlaying;
 }
+
+function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark-mode');
+}
+
+// Set initial state of the toggle based on the default mode
+darkModeToggle.checked = document.documentElement.classList.contains('dark-mode');
