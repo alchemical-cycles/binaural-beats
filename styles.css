@@ -1,3 +1,41 @@
+:root {
+    --bg-color: #f0f0f0;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --button-bg: #4CAF50;
+    --button-color: #ffffff;
+    --button-hover: #45a049;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not(.light-mode):not(.dark-mode) {
+        --bg-color: #121212;
+        --container-bg: #1e1e1e;
+        --text-color: #e0e0e0;
+        --button-bg: #388E3C;
+        --button-color: #ffffff;
+        --button-hover: #2E7D32;
+    }
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --button-bg: #388E3C;
+    --button-color: #ffffff;
+    --button-hover: #2E7D32;
+}
+
+.light-mode {
+    --bg-color: #f0f0f0;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --button-bg: #4CAF50;
+    --button-color: #ffffff;
+    --button-hover: #45a049;
+}
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -5,19 +43,22 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
-    background-color: white;
+    background-color: var(--container-bg);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: background-color 0.3s;
 }
 
 h1 {
-    color: #333;
+    color: var(--text-color);
 }
 
 label {
@@ -34,17 +75,108 @@ button {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--button-bg);
+    color: var(--button-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--button-hover);
 }
 
 button:focus {
-    outline: 2px solid #45a049;
+    outline: 2px solid var(--button-hover);
+}
+
+.mode-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 25px;
+    background-color: var(--button-bg);
+    border-radius: 25px;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.toggle-label:before {
+    content: '';
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background-color: var(--container-bg);
+    transition: 0.3s;
+}
+
+.toggle-checkbox:checked+.toggle-label:before {
+    transform: translateX(25px);
+}
+
+.sun-icon,
+.moon-icon {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+}
+
+.sun-icon {
+    left: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.moon-icon {
+    right: 4px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.toggle-checkbox:checked+.toggle-label .sun-icon {
+    opacity: 1;
+}
+
+.toggle-checkbox:checked+.toggle-label .moon-icon {
+    opacity: 0;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
