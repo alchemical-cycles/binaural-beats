@@ -70,6 +70,7 @@ function toggleDarkMode() {
     document.documentElement.classList.toggle('dark-mode');
     // Update the checkbox state to match the current mode
     darkModeToggle.checked = document.documentElement.classList.contains('dark-mode');
+    announceMode(isDark);
 }
 
 // Set initial state of the toggle based on the default mode
@@ -87,4 +88,14 @@ darkModeMediaQuery.addEventListener('change', function (e) {
 if (darkModeMediaQuery.matches) {
     document.documentElement.classList.add('dark-mode');
     darkModeToggle.checked = true;
+}
+
+function announceMode(isDark) {
+    const modeAnnouncement = document.createElement('div');
+    modeAnnouncement.setAttribute('aria-live', 'polite');
+    modeAnnouncement.textContent = isDark ? 'Dark mode enabled' : 'Light mode enabled';
+    document.body.appendChild(modeAnnouncement);
+    setTimeout(() => {
+        document.body.removeChild(modeAnnouncement);
+    }, 1000);
 }
