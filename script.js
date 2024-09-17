@@ -68,7 +68,23 @@ function toggleSound() {
 
 function toggleDarkMode() {
     document.documentElement.classList.toggle('dark-mode');
+    // Update the checkbox state to match the current mode
+    darkModeToggle.checked = document.documentElement.classList.contains('dark-mode');
 }
 
 // Set initial state of the toggle based on the default mode
 darkModeToggle.checked = document.documentElement.classList.contains('dark-mode');
+
+// Use addEventListener for system color scheme changes
+const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+darkModeMediaQuery.addEventListener('change', function (e) {
+    const shouldBeDark = e.matches;
+    document.documentElement.classList.toggle('dark-mode', shouldBeDark);
+    darkModeToggle.checked = shouldBeDark;
+});
+
+// Set the initial state based on the system preference
+if (darkModeMediaQuery.matches) {
+    document.documentElement.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+}
