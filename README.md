@@ -1,2 +1,3 @@
-# binaural-beats
+# Binaural Beats
+
 Binaural beats for relaxation.
