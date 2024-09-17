@@ -66,11 +66,15 @@ function toggleSound() {
     isPlaying = !isPlaying;
 }
 
-function toggleDarkMode() {
-    document.documentElement.classList.toggle('dark-mode');
-    // Update the checkbox state to match the current mode
-    darkModeToggle.checked = document.documentElement.classList.contains('dark-mode');
+function setTheme(isDark) {
+    document.documentElement.classList.toggle('dark-mode', isDark);
+    darkModeToggle.checked = isDark;
     announceMode(isDark);
+}
+
+function toggleDarkMode() {
+    const isDark = !document.documentElement.classList.contains('dark-mode');
+    setTheme(isDark);
 }
 
 // Set initial state of the toggle based on the default mode
@@ -84,11 +88,8 @@ darkModeMediaQuery.addEventListener('change', function (e) {
     darkModeToggle.checked = shouldBeDark;
 });
 
-// Set the initial state based on the system preference
-if (darkModeMediaQuery.matches) {
-    document.documentElement.classList.add('dark-mode');
-    darkModeToggle.checked = true;
-}
+// Set initial theme based on system preference
+setTheme(darkModeMediaQuery.matches);
 
 function announceMode(isDark) {
     const modeAnnouncement = document.createElement('div');

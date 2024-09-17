@@ -7,6 +7,17 @@
     --button-hover: #45a049;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --container-bg: #1e1e1e;
+        --text-color: #e0e0e0;
+        --button-bg: #388E3C;
+        --button-color: #ffffff;
+        --button-hover: #2E7D32;
+    }
+}
+
 .dark-mode {
     --bg-color: #121212;
     --container-bg: #1e1e1e;
