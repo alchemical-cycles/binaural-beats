@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binaural Beats App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Binaural Beats Generator</h1>
+        <div>
+            <label for="baseFrequency">Base Frequency: <span id="baseFrequencyValue">200</span> Hz</label>
+            <input type="range" id="baseFrequency" min="20" max="500" value="200" step="1" aria-describedby="baseFrequencyValue">
+        </div>
+        <div>
+            <label for="beatFrequency">Beat Frequency: <span id="beatFrequencyValue">10</span> Hz</label>
+            <input type="range" id="beatFrequency" min="1" max="40" value="10" step="1" aria-describedby="beatFrequencyValue">
+        </div>
+        <button id="toggleButton" aria-pressed="false">Start</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
