@@ -5,22 +5,31 @@ let isPlaying = false;
 const baseFrequencyInput = document.getElementById('baseFrequency');
 const beatFrequencyInput = document.getElementById('beatFrequency');
 const toggleButton = document.getElementById('toggleButton');
+const brainwaveStateSelect = document.getElementById('brainwaveState');
+
+const brainwaveRanges = {
+    delta: { min: 0.5, max: 4 },
+    theta: { min: 4, max: 8 },
+    alpha: { min: 8, max: 13 },
+    beta: { min: 13, max: 30 },
+    gamma: { min: 30, max: 100 },
+    custom: { min: 0.5, max: 100 }
+};
 
 baseFrequencyInput.addEventListener('input', updateFrequency);
 beatFrequencyInput.addEventListener('input', updateFrequency);
 toggleButton.addEventListener('click', toggleSound);
+brainwaveStateSelect.addEventListener('change', updateBrainwaveState);
 
 function initAudio() {
     if (!oscillatorLeft || !oscillatorRight) {
         oscillatorLeft = new Tone.Oscillator().toDestination();
         oscillatorRight = new Tone.Oscillator().toDestination();
 
-        // Set initial pan for each oscillator
         oscillatorLeft.set({ pan: -1 });
         oscillatorRight.set({ pan: 1 });
 
-        // Set initial volume (gain)
-        Tone.Destination.volume.value = -20; // This is equivalent to a gain of 0.1
+        Tone.Destination.volume.value = -20;
     }
     updateFrequency();
 }
@@ -30,12 +39,23 @@ function updateFrequency() {
     const beatFrequency = parseFloat(beatFrequencyInput.value);
 
     document.getElementById('baseFrequencyValue').textContent = baseFrequency;
-    document.getElementById('beatFrequencyValue').textContent = beatFrequency;
+    document.getElementById('beatFrequencyValue').textContent = beatFrequency.toFixed(1);
 
     if (oscillatorLeft && oscillatorRight) {
         oscillatorLeft.frequency.value = baseFrequency;
         oscillatorRight.frequency.value = baseFrequency + beatFrequency;
     }
+}
+
+function updateBrainwaveState() {
+    const selectedState = brainwaveStateSelect.value;
+    const range = brainwaveRanges[ selectedState ];
+
+    beatFrequencyInput.min = range.min;
+    beatFrequencyInput.max = range.max;
+    beatFrequencyInput.value = (range.min + range.max) / 2;
+
+    updateFrequency();
 }
 
 async function toggleSound() {
@@ -66,12 +86,11 @@ async function toggleSound() {
 }
 
 function handleAudioError(message) {
-    // Disable audio controls
     baseFrequencyInput.disabled = true;
     beatFrequencyInput.disabled = true;
     toggleButton.disabled = true;
+    brainwaveStateSelect.disabled = true;
 
-    // Display error message to user
     const errorDiv = document.createElement('div');
     errorDiv.textContent = message;
     errorDiv.style.color = 'red';
@@ -81,3 +100,4 @@ function handleAudioError(message) {
 
 // Initial setup
 initAudio();
+updateBrainwaveState();
